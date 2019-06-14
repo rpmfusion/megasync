@@ -109,6 +109,9 @@ sed -i '/-u/d' src/configure
 sed -i 's/-v/-y/' src/configure
 sed -i '/qlite_pkg $build_dir $install_dir/d' src/MEGASync/mega/contrib/build_sdk.sh
 
+#Correct build for rawhide
+sed -i 's|static int tgkill|int tgkill|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
+
 
 %build
 #Enable FFMPEG
