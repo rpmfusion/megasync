@@ -1,4 +1,4 @@
-%global sdk_version 3.4.7
+%global sdk_version 3.5.3
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -7,8 +7,8 @@
 %global enable_lto 1
 
 Name:       megasync
-Version:    4.0.2
-Release:    3%{?dist}
+Version:    4.1.1
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -232,6 +232,9 @@ popd
 %endif
 
 %changelog
+* Fri Jun 14 2019 Vasiliy N. Glazov <vascom2@gmail.com> - 4.1.1-1
+- Update to 4.1.1
+
 * Tue Apr 23 2019 Vasiliy N. Glazov <vascom2@gmail.com> - 4.0.2-3
 - Corrected license
 - Added file manager plugins
