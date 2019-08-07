@@ -8,7 +8,7 @@
 
 Name:       megasync
 Version:    4.1.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -235,6 +235,9 @@ popd
 %endif
 
 %changelog
+* Wed Aug 07 2019 Leigh Scott <leigh123linux@gmail.com> - 4.1.1-2
+- Rebuild for new ffmpeg version
+
 * Fri Jun 14 2019 Vasiliy N. Glazov <vascom2@gmail.com> - 4.1.1-1
 - Update to 4.1.1
 
