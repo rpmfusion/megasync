@@ -1,4 +1,4 @@
-%global sdk_version 3.6.2a
+%global sdk_version 3.6.2b
 
 %bcond_without dolphin
 %bcond_without nautilus
