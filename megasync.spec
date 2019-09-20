@@ -4,7 +4,7 @@
 %bcond_without nautilus
 %bcond_without nemo
 
-%global enable_lto 1
+%global enable_lto 0
 
 Name:       megasync
 Version:    4.2.5
@@ -41,6 +41,7 @@ BuildRequires:  LibRaw-devel
 BuildRequires:  libsodium-devel
 BuildRequires:  libuv-devel
 BuildRequires:  sqlite-devel
+BuildRequires:  libcurl-devel
 
 Requires:       hicolor-icon-theme
 
