@@ -30,7 +30,7 @@ BuildRequires:  bzip2-devel
 BuildRequires:  libmediainfo-devel
 BuildRequires:  c-ares-devel
 BuildRequires:  libatomic
-BuildRequires:  cryptopp-devel >= 5.6.5
+BuildRequires:  cryptopp-devel
 BuildRequires:  desktop-file-utils
 BuildRequires:  qt5-qtbase-devel >= 5.6
 BuildRequires:  qt5-qttools-devel
