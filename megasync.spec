@@ -1,4 +1,4 @@
-%global sdk_version 3.6.2b
+%global sdk_version 3.6.8
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -7,13 +7,13 @@
 %global enable_lto 1
 
 Name:       megasync
-Version:    4.2.5
-Release:    2%{?dist}
+Version:    4.3.0.8
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
 URL:        https://mega.nz
-Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}.0_Linux.tar.gz
+Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_Linux.tar.gz
 Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
 
 ExcludeArch:    %power64 aarch64
@@ -97,7 +97,7 @@ Requires:       %{name}%{?_isa}
 
 
 %prep
-%autosetup -n MEGAsync-%{version}.0_Linux
+%autosetup -n MEGAsync-%{version}_Linux
 
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
@@ -112,6 +112,9 @@ sed -i '/qlite_pkg $build_dir $install_dir/d' src/MEGASync/mega/contrib/build_sd
 #Correct build for rawhide
 sed -i 's|static int tgkill|int tgkill|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
 
+# Disable pdfium
+sed -i '/DEFINES += REQUIRE_HAVE_PDFIUM/d' src/MEGASync/MEGASync.pro
+
 
 %build
 #Enable FFMPEG
@@ -119,7 +122,7 @@ echo "CONFIG += link_pkgconfig
 PKGCONFIG += libavcodec" >> src/MEGASync/MEGASync.pro
 #Enable LTO optimisation
 %if %{enable_lto}
-echo "QMAKE_CXXFLAGS += -flto
+echo "QMAKE_CXXFLAGS += -flto=auto
 QMAKE_LFLAGS_RELEASE += -flto" >> src/MEGASync/MEGASync.pro
 %endif
 
@@ -235,6 +238,9 @@ popd
 %endif
 
 %changelog
+* Wed Mar 04 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.0.8-1
+- Update to 4.3.0.8
+
 * Wed Feb 05 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 4.2.5-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
