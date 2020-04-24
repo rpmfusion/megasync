@@ -2,7 +2,11 @@
 
 %bcond_without dolphin
 %bcond_without nautilus
+%if 0%{?rhel} == 8
+%bcond_with nemo
+%else
 %bcond_without nemo
+%endif
 
 %global enable_lto 1
 
