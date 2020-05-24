@@ -12,7 +12,7 @@
 
 Name:       megasync
 Version:    4.3.1.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -242,6 +242,9 @@ popd
 %endif
 
 %changelog
+* Sun May 24 2020 Leigh Scott <leigh123linux@gmail.com> - 4.3.1.0-2
+- Rebuild for new libraw version
+
 * Thu Mar 26 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.1.0-1
 - Update to 4.3.1.0
 
