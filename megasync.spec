@@ -1,4 +1,4 @@
-%global sdk_version 3.6.8
+%global sdk_version 3.7.1
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -8,11 +8,11 @@
 %bcond_without nemo
 %endif
 
-%global enable_lto 1
+%global enable_lto 0
 
 Name:       megasync
-Version:    4.3.1.0
-Release:    2%{?dist}
+Version:    4.3.3.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -39,6 +39,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  qt5-qtbase-devel >= 5.6
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtsvg-devel
+BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  terminus-fonts
 BuildRequires:  fontpackages-filesystem
 BuildRequires:  LibRaw-devel
@@ -119,6 +120,10 @@ sed -i 's|static int tgkill|int tgkill|' src/MEGASync/google_breakpad/client/lin
 # Disable pdfium
 sed -i '/DEFINES += REQUIRE_HAVE_PDFIUM/d' src/MEGASync/MEGASync.pro
 
+# Fix build with new glibc
+# https://github.com/meganz/MEGAsync/pull/477
+sed -i 's|sys_siglist\[sig\]|strsignal(sig)|' src/MEGASync/control/CrashHandler.cpp
+
 
 %build
 #Enable FFMPEG
@@ -150,7 +155,7 @@ pushd src/MEGAShellExtDolphin/build
     rm ../megasync-plugin.moc
     mv ../CMakeLists_kde5.txt ../CMakeLists.txt
     %cmake_kf5 ..
-    %make_build
+    %cmake_build
 popd
 %endif
 
@@ -185,13 +190,14 @@ popd
 
 %if %{with dolphin}
 pushd src/MEGAShellExtDolphin/build
-    %make_install
+    %cmake_install
 popd
 %endif
 
 %if %{with nautilus}
+sed -i 's|$(INSTALL_ROOT)/builddir|/builddir|' src/MEGAShellExtNautilus/build/Makefile
 pushd src/MEGAShellExtNautilus/build
-    %make_install
+    %make_install INSTALL_ROOT=%{buildroot} DESKTOP_DESTDIR=%{_prefix}
     mkdir -p %{buildroot}%{_libdir}/nautilus/extensions-3.0
     install -pm 755 libMEGAShellExtNautilus.so \
         %{buildroot}%{_libdir}/nautilus/extensions-3.0/libMEGAShellExtNautilus.so
@@ -200,8 +206,9 @@ popd
 %endif
 
 %if %{with nemo}
+sed -i 's|$(INSTALL_ROOT)/builddir|/builddir|' src/MEGAShellExtNemo/build/Makefile
 pushd src/MEGAShellExtNemo/build
-    %make_install
+    %make_install INSTALL_ROOT=%{buildroot} DESKTOP_DESTDIR=%{_prefix}
     mkdir -p %{buildroot}%{_libdir}/nemo/extensions-3.0
     install -pm 755 libMEGAShellExtNemo.so \
         %{buildroot}%{_libdir}/nemo/extensions-3.0/libMEGAShellExtNemo.so
@@ -227,7 +234,7 @@ popd
 
 %if %{with nautilus}
 %files -n nautilus-%{name}
-%{_libdir}/nautilus/extensions-3.0/libMEGAShellExtNautilus.so
+%{_libdir}/nautilus/extensions-3.0/libMEGAShellExtNautilus.so*
 %exclude %{_datadir}/icons/hicolor/*/emblems/mega-dolphin-*.png
 %exclude %{_datadir}/icons/hicolor/*/emblems/mega-nemo*.png
 %{_datadir}/icons/hicolor/*/*/mega-*.icon
@@ -236,12 +243,15 @@ popd
 
 %if %{with nemo}
 %files -n nemo-%{name}
-%{_libdir}/nemo/extensions-3.0/libMEGAShellExtNemo.so
+%{_libdir}/nemo/extensions-3.0/libMEGAShellExtNemo.so*
 %{_datadir}/icons/hicolor/*/*/mega-nemo*.icon
 %{_datadir}/icons/hicolor/*/*/mega-nemo*.png
 %endif
 
 %changelog
+* Mon Jul 27 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.3.0-1
+- Update to 4.3.3.0
+
 * Sun May 24 2020 Leigh Scott <leigh123linux@gmail.com> - 4.3.1.0-2
 - Rebuild for new libraw version
 
