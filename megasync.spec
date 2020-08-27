@@ -1,4 +1,5 @@
 %global sdk_version 3.7.1
+%undefine __cmake_in_source_build
 
 %bcond_without dolphin
 %bcond_without nautilus
