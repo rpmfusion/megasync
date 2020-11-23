@@ -1,4 +1,4 @@
-%global sdk_version 3.7.5
+%global sdk_version 3.7.3e
 %undefine __cmake_in_source_build
 
 %bcond_without dolphin
@@ -12,7 +12,7 @@
 %global enable_lto 0
 
 Name:       megasync
-Version:    4.3.5.0
+Version:    4.3.7.0
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -250,7 +250,10 @@ popd
 %endif
 
 %changelog
-* Wed Oct 21 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.5.0-1
+* Mon Nov 23 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.7.0-1
+- Update to 4.3.7.0
+
+* Wed Nov 11 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.5.0-1
 - Update to 4.3.5.0
 
 * Wed Aug 19 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 4.3.3.0-2
