@@ -1,5 +1,4 @@
 %global sdk_version 3.7.3e
-%undefine __cmake_in_source_build
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -9,11 +8,9 @@
 %bcond_without nemo
 %endif
 
-%global enable_lto 0
-
 Name:       megasync
 Version:    4.3.7.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -130,11 +127,6 @@ sed -i 's|sys_siglist\[sig\]|strsignal(sig)|' src/MEGASync/control/CrashHandler.
 #Enable FFMPEG
 echo "CONFIG += link_pkgconfig
 PKGCONFIG += libavcodec" >> src/MEGASync/MEGASync.pro
-#Enable LTO optimisation
-%if %{enable_lto}
-echo "QMAKE_CXXFLAGS += -flto=auto
-QMAKE_LFLAGS_RELEASE += -flto" >> src/MEGASync/MEGASync.pro
-%endif
 
 export DESKTOP_DESTDIR=%{buildroot}%{_prefix}
 
@@ -250,6 +242,9 @@ popd
 %endif
 
 %changelog
+* Fri Jan 01 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.7.0-2
+- Rebuilt for new cryptopp
+
 * Mon Nov 23 2020 Vasiliy N. Glazov <vascom2@gmail.com> - 4.3.7.0-1
 - Update to 4.3.7.0
 
