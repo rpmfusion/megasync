@@ -10,7 +10,7 @@
 
 Name:       megasync
 Version:    4.4.0.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -242,6 +242,9 @@ popd
 %endif
 
 %changelog
+* Wed Aug 04 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 4.4.0.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
 * Mon Mar 01 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.4.0.0-1
 - Update to 4.4.0.0
 
