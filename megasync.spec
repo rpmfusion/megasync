@@ -1,4 +1,5 @@
-%global sdk_version 3.7.3h
+%global sdk_version 3.8.2c
+%global source_suffix Linux
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -9,13 +10,13 @@
 %endif
 
 Name:       megasync
-Version:    4.4.0.0
+Version:    4.5.3.0
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
 URL:        https://mega.nz
-Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_Linux.tar.gz
+Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}.tar.gz
 Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
 
 ExcludeArch:    %power64 aarch64
@@ -100,12 +101,15 @@ Requires:       %{name}%{?_isa}
 
 
 %prep
-%autosetup -n MEGAsync-%{version}_Linux
+%autosetup -n MEGAsync-%{version}_%{source_suffix}
 
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
 mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
+# Fix ffmpeg build
+sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
+sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/qt.cpp
 
 #Disable all bundling
 sed -i '/-u/d' src/configure
@@ -242,6 +246,10 @@ popd
 %endif
 
 %changelog
+* Fri Sep 17 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.5.3.0-1
+- Update to 4.5.3.0
+- Fix ffmeg
+
 * Mon Mar 01 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.4.0.0-1
 - Update to 4.4.0.0
 
