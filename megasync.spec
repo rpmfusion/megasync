@@ -111,6 +111,11 @@ cp src/MEGASync/mega/LICENSE LICENSE-SDK
 sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
 sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/qt.cpp
 
+%if 0%{?fedora} >= 35
+# Fix glibc for F35 and later
+sed -i 's|kSigStackSize = std::max(8192|kSigStackSize = std::max(static_cast<long>(8192)|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
+%endif
+
 #Disable all bundling
 sed -i '/-u/d' src/configure
 sed -i 's/-v/-y/' src/configure
