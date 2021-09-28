@@ -11,7 +11,7 @@
 
 Name:       megasync
 Version:    4.5.3.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -251,6 +251,9 @@ popd
 %endif
 
 %changelog
+* Tue Sep 28 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.5.3.0-2
+-  Rebuild for new cryptopp
+
 * Fri Sep 17 2021 Vasiliy N. Glazov <vascom2@gmail.com> - 4.5.3.0-1
 - Update to 4.5.3.0
 - Fix ffmeg
