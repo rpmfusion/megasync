@@ -1,5 +1,4 @@
-%define _lto_cflags %{nil}
-%global sdk_version 3.8.2c
+%global sdk_version 3.9.6b
 %global source_suffix Linux
 
 %bcond_without dolphin
@@ -11,8 +10,8 @@
 %endif
 
 Name:       megasync
-Version:    4.5.3.0
-Release:    3%{?dist}
+Version:    4.6.3.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -46,6 +45,9 @@ BuildRequires:  LibRaw-devel
 BuildRequires:  libsodium-devel
 BuildRequires:  libuv-devel
 BuildRequires:  sqlite-devel
+BuildRequires:  vcpkg
+BuildRequires:  systemd-devel
+BuildRequires:  freeimage-devel
 
 Requires:       hicolor-icon-theme
 
@@ -61,9 +63,6 @@ folders in parallel.
 Fast:
 Take advantage of MEGA's high-powered infrastructure and multi-connection
 transfers.
-
-Generous:
-Store up to 50 GB for free!
 
 %if %{with dolphin}
 %package -n dolphin-%{name}
@@ -110,7 +109,7 @@ mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
 # Fix ffmpeg build
 sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
-sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/qt.cpp
+# sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/qt.cpp
 
 %if 0%{?fedora} >= 35
 # Fix glibc for F35 and later
@@ -118,7 +117,7 @@ sed -i 's|kSigStackSize = std::max(8192|kSigStackSize = std::max(static_cast<lon
 %endif
 
 #Disable all bundling
-sed -i '/-u/d' src/configure
+sed -i 's/-u/-f/' src/configure
 sed -i 's/-v/-y/' src/configure
 sed -i '/qlite_pkg $build_dir $install_dir/d' src/MEGASync/mega/contrib/build_sdk.sh
 
@@ -252,6 +251,9 @@ popd
 %endif
 
 %changelog
+* Sat Jan 29 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.3.0-1
+- Update to 4.6.3.0
+
 * Thu Jan 27 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.5.3.0-3
 -  Rebuild without LTO
 
