@@ -257,7 +257,7 @@ popd
 %endif
 
 %changelog
-* Mon Apr 04 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-2
+* Mon Apr 04 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-3
 - Fix build with ffmpeg 5
 - Require full ffmpeg libs
 
