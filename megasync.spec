@@ -11,7 +11,7 @@
 
 Name:       megasync
 Version:    4.6.5.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -131,6 +131,8 @@ sed -i '/DEFINES += REQUIRE_HAVE_PDFIUM/d' src/MEGASync/MEGASync.pro
 # https://github.com/meganz/MEGAsync/pull/477
 sed -i 's|sys_siglist\[sig\]|strsignal(sig)|' src/MEGASync/control/CrashHandler.cpp
 
+#Fix FFMPEG 5 sdk build
+sed -i -e 's|AVCodec\* decoder|auto decoder|' src/MEGASync/mega/src/gfx/freeimage.cpp
 
 %build
 #Enable FFMPEG
@@ -152,11 +154,10 @@ pushd src
 popd
 
 %if %{with dolphin}
-mkdir src/MEGAShellExtDolphin/build
-pushd src/MEGAShellExtDolphin/build
-    rm ../megasync-plugin.moc
-    mv ../CMakeLists_kde5.txt ../CMakeLists.txt
-    %cmake_kf5 ..
+pushd src/MEGAShellExtDolphin
+    rm megasync-plugin.moc
+    mv CMakeLists_kde5.txt CMakeLists.txt
+    %cmake_kf5
     %cmake_build
 popd
 %endif
@@ -191,7 +192,7 @@ pushd src
 popd
 
 %if %{with dolphin}
-pushd src/MEGAShellExtDolphin/build
+pushd src/MEGAShellExtDolphin
     %cmake_install
 popd
 %endif
@@ -251,6 +252,9 @@ popd
 %endif
 
 %changelog
+* Mon Apr 04 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-2
+- Fix build with ffmpeg 5
+
 * Wed Mar 30 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-1
 - Update to 4.6.5.0
 
