@@ -11,7 +11,7 @@
 
 Name:       megasync
 Version:    4.6.5.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -50,6 +50,11 @@ BuildRequires:  systemd-devel
 BuildRequires:  freeimage-devel
 
 Requires:       hicolor-icon-theme
+
+# Fedora now has a stripped ffmpeg. Make sure we're using the full version.
+%if 0%{?fedora} && 0%{?fedora} >= 36
+Requires: ffmpeg-libs%{?_isa}
+%endif
 
 %description
 Secure:
@@ -254,6 +259,7 @@ popd
 %changelog
 * Mon Apr 04 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-2
 - Fix build with ffmpeg 5
+- Require full ffmpeg libs
 
 * Wed Mar 30 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-1
 - Update to 4.6.5.0
