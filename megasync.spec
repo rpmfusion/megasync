@@ -1,5 +1,5 @@
-%global sdk_version 3.9.6b
-%global source_suffix Linux
+%global sdk_version 3.9.16
+%global source_suffix Win
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -10,8 +10,8 @@
 %endif
 
 Name:       megasync
-Version:    4.6.5.0
-Release:    3%{?dist}
+Version:    4.6.6.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -257,6 +257,9 @@ popd
 %endif
 
 %changelog
+* Mon Apr 11 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.6.0-1
+- Update to 4.6.6.0
+
 * Mon Apr 04 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.5.0-3
 - Fix build with ffmpeg 5
 - Require full ffmpeg libs
