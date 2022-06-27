@@ -18,8 +18,6 @@ License:    Proprietary and BSD
 URL:        https://mega.nz
 Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}.tar.gz
 Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
-# Patch0:     aarch64-01.patch
-# Patch1:     aarch64-02.patch
 
 ExcludeArch:    %power64 %arm32 %arm64
 
