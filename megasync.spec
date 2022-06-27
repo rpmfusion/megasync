@@ -1,5 +1,5 @@
-%global sdk_version 3.9.16
-%global source_suffix Win
+%global sdk_version 3.9.16a
+%global source_suffix Linux
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -10,16 +10,18 @@
 %endif
 
 Name:       megasync
-Version:    4.6.6.0
-Release:    2%{?dist}
+Version:    4.6.7.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
 URL:        https://mega.nz
 Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}.tar.gz
 Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
+# Patch0:     aarch64-01.patch
+# Patch1:     aarch64-02.patch
 
-ExcludeArch:    %power64 aarch64 %arm32
+ExcludeArch:    %power64 %arm32
 
 BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
@@ -106,7 +108,7 @@ Requires:       %{name}%{?_isa}
 
 
 %prep
-%autosetup -n MEGAsync-%{version}_%{source_suffix}
+%autosetup -p1 -n MEGAsync-%{version}_%{source_suffix}
 
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
@@ -257,6 +259,9 @@ popd
 %endif
 
 %changelog
+* Mon Jun 27 2022 Vasiliy Glazov <vascom2@gmail.com> - 4.6.7.0-1
+- Update to 4.6.7.0
+
 * Tue Apr 12 2022 Vasiliy N. Glazov <vascom2@gmail.com> - 4.6.6.0-2
 - Disable armv7 build
 
