@@ -2,7 +2,11 @@
 %global source_suffix Linux
 
 %bcond_without dolphin
+%if 0%{?fedora} > 36
+%bcond_with nautilus
+%else
 %bcond_without nautilus
+%endif
 %if 0%{?rhel} == 8
 %bcond_with nemo
 %else
