@@ -14,7 +14,7 @@
 %endif
 
 Name:       megasync
-Version:    4.8.6.0
+Version:    4.8.7.0
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -261,6 +261,9 @@ popd
 %endif
 
 %changelog
+* Sat Feb 04 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.8.7.0-1
+- Update to 4.8.7.0
+
 * Fri Jan 27 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.8.6.0-1
 - Update to 4.8.6.0
 
