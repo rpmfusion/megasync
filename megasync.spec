@@ -22,6 +22,7 @@ License:    Proprietary and BSD
 URL:        https://mega.nz
 Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}.tar.gz
 Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
+Patch0:     ffmpeg6.patch
 
 ExcludeArch:    %power64 %arm32 %arm64
 
@@ -110,11 +111,12 @@ Requires:       %{name}%{?_isa}
 
 
 %prep
-%autosetup -p1 -n MEGAsync-%{version}_%{source_suffix}
+%setup -q -n MEGAsync-%{version}_%{source_suffix}
 
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
 mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
+%patch0 -p0
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
 # Fix ffmpeg build
 sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
