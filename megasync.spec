@@ -1,5 +1,5 @@
-%global sdk_version 4.16.0b
-%global source_suffix Linux
+%global sdk_version 4.16.0c
+%global source_suffix OSX
 
 %bcond_without dolphin
 %if 0%{?fedora} > 36
@@ -14,8 +14,8 @@
 %endif
 
 Name:       megasync
-Version:    4.9.0.0
-Release:    2%{?dist}
+Version:    4.9.1.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -263,6 +263,9 @@ popd
 %endif
 
 %changelog
+* Sun Apr 02 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.9.1.0-1
+- Update to 4.9.1.0
+
 * Mon Mar 13 2023 Leigh Scott <leigh123linux@gmail.com> - 4.9.0.0-2
 - rebuilt
 
