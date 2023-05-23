@@ -1,4 +1,4 @@
-%global sdk_version 4.16.0c
+%global sdk_version 4.17.1d
 %global source_suffix OSX
 
 %bcond_without dolphin
@@ -14,7 +14,7 @@
 %endif
 
 Name:       megasync
-Version:    4.9.1.0
+Version:    4.9.4.0
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -116,7 +116,7 @@ Requires:       %{name}%{?_isa}
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
 mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
-%patch0 -p0
+%patch 0 -p0
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
 # Fix ffmpeg build
 sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
@@ -263,6 +263,9 @@ popd
 %endif
 
 %changelog
+* Tue May 23 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.9.4.0-1
+- Update to 4.9.4.0
+
 * Sun Apr 02 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.9.1.0-1
 - Update to 4.9.1.0
 
