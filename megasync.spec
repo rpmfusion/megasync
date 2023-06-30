@@ -1,4 +1,4 @@
-%global sdk_version 4.21.0
+%global sdk_version 4.21.0c
 %global source_suffix OSX
 
 %bcond_without dolphin
