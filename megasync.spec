@@ -163,8 +163,6 @@ popd
 
 %if %{with dolphin}
 pushd src/MEGAShellExtDolphin
-    rm megasync-plugin.moc
-    mv CMakeLists_kde5.txt CMakeLists.txt
     %cmake_kf5
     %cmake_build
 popd
