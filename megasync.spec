@@ -118,9 +118,6 @@ tar -xvf %{SOURCE1} -C src/MEGASync/mega
 mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
 %patch 0 -p0
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
-# Fix ffmpeg build
-sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/freeimage.cpp
-# sed -i 's|videoStream->skip_to_keyframe|//videoStream->skip_to_keyframe|' src/MEGASync/mega/src/gfx/qt.cpp
 
 %if 0%{?fedora} >= 35
 # Fix glibc for F35 and later

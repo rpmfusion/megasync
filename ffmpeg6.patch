@@ -14,10 +14,10 @@
  
  const char *GfxProviderFreeImage::supportedformatsFfmpeg()
  {
-@@ -331,10 +333,12 @@ bool GfxProviderFreeImage::readbitmapFfm
+@@ -330,10 +332,12 @@ bool GfxProviderFreeImage::readbitmapFfm
+ 
      // Force seeking to key frames
      formatContext->seek2any = false;
-     videoStream->skip_to_keyframe = true;
 +#if LIBAVCODEC_VERSION_MAJOR < 60
      if (decoder->capabilities & CAP_TRUNCATED)
      {
