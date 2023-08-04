@@ -1,4 +1,4 @@
-%global sdk_version 4.21.0c
+%global sdk_version 4.25.0
 %global source_suffix OSX
 
 %bcond_without dolphin
@@ -14,8 +14,8 @@
 %endif
 
 Name:       megasync
-Version:    4.9.5.0
-Release:    2%{?dist}
+Version:    4.9.6.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -258,6 +258,9 @@ popd
 %endif
 
 %changelog
+* Fri Aug 04 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.9.6.0-1
+- Update to 4.9.6.0
+
 * Thu Aug 03 2023 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 4.9.5.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
