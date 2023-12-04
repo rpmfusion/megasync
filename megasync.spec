@@ -1,5 +1,5 @@
 %global sdk_version 4.29.1b
-%global source_suffix OSX
+%global source_suffix Linux
 
 %bcond_without dolphin
 %if 0%{?fedora} > 36
@@ -258,7 +258,7 @@ popd
 %endif
 
 %changelog
-* Tue Nov 14 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.11.0.0-1
+* Mon Dec 04 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.11.0.0-1
 - Update to 4.11.0.0
 
 * Thu Oct 19 2023 Vasiliy Glazov <vascom2@gmail.com> - 4.10.0.0-1
