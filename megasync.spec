@@ -143,7 +143,7 @@ sed -i 's|sys_siglist\[sig\]|strsignal(sig)|' src/MEGASync/control/CrashHandler.
 sed -i -e 's|AVCodec\* decoder|auto decoder|' src/MEGASync/mega/src/gfx/freeimage.cpp
 
 #Fix Nemo plugin build
-sed -i "s|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);\nvoid expanselocalpath(char \*path, char \*absolutepath);|" src/MEGAShellExtNautilus/MEGAShellExt.h
+sed -i "s|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);\nvoid expanselocalpath(char \*path, char \*absolutepath);|" src/MEGAShellExtNemo/MEGAShellExt.h
 
 %build
 #Enable FFMPEG
