@@ -144,6 +144,7 @@ sed -i -e 's|AVCodec\* decoder|auto decoder|' src/MEGASync/mega/src/gfx/freeimag
 
 #Fix Nemo plugin build
 sed -i "s|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);\nvoid expanselocalpath(char \*path, char \*absolutepath);|" src/MEGAShellExtNemo/MEGAShellExt.h
+sed -i "s|#include <string.h>|#include <string.h>\n#include <stdio.h>|" src/MEGAShellExtNemo/mega_ext_client.c
 
 %build
 #Enable FFMPEG
