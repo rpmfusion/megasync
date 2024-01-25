@@ -44,6 +44,7 @@ BuildRequires:  qt5-qtbase-devel >= 5.6
 BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  qt5-qtx11extras-devel
+BuildRequires:  qt5-qtdeclarative-devel
 BuildRequires:  terminus-fonts
 BuildRequires:  fontpackages-filesystem
 BuildRequires:  LibRaw-devel
