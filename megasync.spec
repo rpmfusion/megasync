@@ -1,5 +1,5 @@
-%global sdk_version 4.31.0
-%global source_suffix OSX
+%global sdk_version 5.2.3
+%global source_suffix Linux
 
 %bcond_without dolphin
 %if 0%{?fedora} > 36
@@ -14,8 +14,8 @@
 %endif
 
 Name:       megasync
-Version:    4.12.2.0
-Release:    2%{?dist}
+Version:    5.2.0.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -128,7 +128,7 @@ sed -i 's|kSigStackSize = std::max(8192|kSigStackSize = std::max(static_cast<lon
 #Disable all bundling
 sed -i 's/-u/-f/' src/configure
 sed -i 's/-v/-y/' src/configure
-sed -i '/qlite_pkg $build_dir $install_dir/d' src/MEGASync/mega/contrib/build_sdk.sh
+sed -i 's|disable_sqlite=0|disable_sqlite=1|' src/MEGASync/mega/contrib/build_sdk.sh
 
 #Correct build for rawhide
 sed -i 's|static int tgkill|int tgkill|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
@@ -263,6 +263,9 @@ popd
 %endif
 
 %changelog
+* Tue Mar 19 2024 Vasiliy Glazov <vascom2@gmail.com> - 5.2.0.0-1
+- Update to 5.2.0.0
+
 * Sun Feb 04 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 4.12.2.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
