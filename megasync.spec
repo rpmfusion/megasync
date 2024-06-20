@@ -1,5 +1,5 @@
 %global sdk_version 5.2.3
-%global source_suffix Linux
+%global source_suffix OSX
 
 %bcond_without dolphin
 %if 0%{?fedora} > 36
@@ -14,7 +14,7 @@
 %endif
 
 Name:       megasync
-Version:    5.2.0.0
+Version:    5.2.1.0
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -54,6 +54,7 @@ BuildRequires:  sqlite-devel
 BuildRequires:  vcpkg
 BuildRequires:  systemd-devel
 BuildRequires:  freeimage-devel
+BuildRequires:  fuse-devel
 
 Requires:       hicolor-icon-theme
 
@@ -263,6 +264,9 @@ popd
 %endif
 
 %changelog
+* Thu Jun 20 2024 Vasiliy Glazov <vascom2@gmail.com> - 5.2.1.0-1
+- Update to 5.2.1.0
+
 * Tue Mar 19 2024 Vasiliy Glazov <vascom2@gmail.com> - 5.2.0.0-1
 - Update to 5.2.0.0
 
