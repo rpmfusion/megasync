@@ -15,7 +15,7 @@
 
 Name:       megasync
 Version:    5.2.1.0
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -264,6 +264,9 @@ popd
 %endif
 
 %changelog
+* Wed Jan 29 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 5.2.1.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
+
 * Sat Oct 12 2024 Vasiliy Glazov <vascom2@gmail.com> - 5.2.1.0-3
 - Rebuild for new ffmpeg
 
