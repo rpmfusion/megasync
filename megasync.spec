@@ -1,12 +1,8 @@
-%global sdk_version 5.2.3
-%global source_suffix OSX
+%global sdk_version 10.8.2
+%global source_suffix Linux
 
 %bcond_without dolphin
-%if 0%{?fedora} > 36
-%bcond_with nautilus
-%else
 %bcond_without nautilus
-%endif
 %if 0%{?rhel} == 8
 %bcond_with nemo
 %else
@@ -14,22 +10,24 @@
 %endif
 
 Name:       megasync
-Version:    5.2.1.0
-Release:    7%{?dist}
+Version:    6.2.2.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
 URL:        https://mega.nz
-Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}.tar.gz
-Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}.tar.gz
-Patch0:     ffmpeg6.patch
+Source0:    https://github.com/meganz/MEGAsync/archive/v%{version}_%{source_suffix}/MEGAsync-%{version}_%{source_suffix}.tar.gz
+Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}/sdk-%{sdk_version}.tar.gz
+Patch0:     megasync-link-zlib.patch
+Patch1:     010-megasync-sdk-fix-cmake-dependencies-detection.patch
+Patch2:     020-megasync-app-fix-cmake-dependencies-detection.patch
+Patch3:     040-megasync-sdk-add-missing-icu-link-library.patch
 
 ExcludeArch:    %power64 %arm32 %arm64
 
 BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  zlib-devel
-BuildRequires:  automake
 BuildRequires:  libtool
 BuildRequires:  gcc-c++
 BuildRequires:  wget
@@ -50,9 +48,11 @@ BuildRequires:  fontpackages-filesystem
 BuildRequires:  LibRaw-devel
 BuildRequires:  libsodium-devel
 BuildRequires:  libuv-devel
+BuildRequires:  readline-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  vcpkg
 BuildRequires:  systemd-devel
+#Too old, has no cmake support
 BuildRequires:  freeimage-devel
 BuildRequires:  fuse-devel
 
@@ -92,7 +92,7 @@ Requires:       %{name}%{?_isa}
 %if %{with nautilus}
 %package -n nautilus-%{name}
 Summary:        Extension for Nautilus to interact with Megasync
-BuildRequires:  pkgconfig(libnautilus-extension) >= 2.16.0
+BuildRequires:  pkgconfig(libnautilus-extension-4) 
 Requires:       nautilus%{?_isa}
 Requires:       %{name}%{?_isa}
 
@@ -118,54 +118,39 @@ Requires:       %{name}%{?_isa}
 #Move Mega SDK to it's place
 tar -xvf %{SOURCE1} -C src/MEGASync/mega
 mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
-%patch 0 -p0
+%patch 0 -p1
+%patch 1 -p1 -d src/MEGASync/mega
+%patch 2 -p1
+%patch 3 -p1 -d src/MEGASync/mega
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
 
-%if 0%{?fedora} >= 35
-# Fix glibc for F35 and later
-sed -i 's|kSigStackSize = std::max(8192|kSigStackSize = std::max(static_cast<long>(8192)|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
-%endif
-
-#Disable all bundling
-sed -i 's/-u/-f/' src/configure
-sed -i 's/-v/-y/' src/configure
-sed -i 's|disable_sqlite=0|disable_sqlite=1|' src/MEGASync/mega/contrib/build_sdk.sh
-
-#Correct build for rawhide
-sed -i 's|static int tgkill|int tgkill|' src/MEGASync/google_breakpad/client/linux/handler/exception_handler.cc
-
-# Disable pdfium
-sed -i '/DEFINES += REQUIRE_HAVE_PDFIUM/d' src/MEGASync/MEGASync.pro
-
-# Fix build with new glibc
-# https://github.com/meganz/MEGAsync/pull/477
-sed -i 's|sys_siglist\[sig\]|strsignal(sig)|' src/MEGASync/control/CrashHandler.cpp
-
-#Fix FFMPEG 5 sdk build
-sed -i -e 's|AVCodec\* decoder|auto decoder|' src/MEGASync/mega/src/gfx/freeimage.cpp
+#Network needed to download this pointless unused file
+sed -i '/include(get_clang_format)/d; /get_clang_format()/d' CMakeLists.txt
 
 #Fix Nemo plugin build
-sed -i "s|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);|void mega_ext_on_sync_del(MEGAExt \*mega_ext, const gchar \*path);\nvoid expanselocalpath(char \*path, char \*absolutepath);|" src/MEGAShellExtNemo/MEGAShellExt.h
-sed -i "s|#include <string.h>|#include <string.h>\n#include <stdio.h>|" src/MEGAShellExtNemo/mega_ext_client.c
+sed -i 's/^void expanselocalpath(char \*path, char \*absolutepath);//' src/MEGAShellExtNemo/MEGAShellExt.h
+
+#Help it find freeimage
+sed -i 's/.*find_package.*[Ff]ree[Ii]mage.*/# bypassed/' src/MEGASync/mega/cmake/modules/sdklib_libraries.cmake
+sed -i 's/FreeImage::FreeImage/${FreeImage_LIBRARY}/g' src/MEGASync/mega/cmake/modules/sdklib_libraries.cmake
 
 %build
-#Enable FFMPEG
-echo "CONFIG += link_pkgconfig
-PKGCONFIG += libavcodec" >> src/MEGASync/MEGASync.pro
+%cmake \
+ -DCMAKE_BUILD_TYPE=Release \
+ -DCMAKE_MODULE_PATH:PATH="src/MEGASync/mega/cmake/modules/packages" \
+ -DCMAKE_SKIP_INSTALL_RPATH:BOOL='YES' \
+ -DENABLE_DESIGN_TOKENS_IMPORTER:BOOL='OFF' \
+ -DENABLE_DESKTOP_APP_TESTS:BOOL='OFF' \
+ -DUSE_BREAKPAD:BOOL='OFF' \
+ -DUSE_FFMPEG:BOOL='ON' \
+ -DUSE_FREEIMAGE:BOOL=ON \
+ -DUSE_PDFIUM:BOOL='OFF' \
+ -DCMAKE_INSTALL_PREFIX=/ \
+ -DCMAKE_SHARED_LINKER_FLAGS="-lfreeimage" \
+ -DCMAKE_EXE_LINKER_FLAGS="-Wl,--no-as-needed -lz -lfreeimage" \
+ -Wno-dev
 
-export DESKTOP_DESTDIR=%{buildroot}%{_prefix}
-
-pushd src
-    ./configure -i -z
-
-    %qmake_qt5 \
-        "CONFIG += FULLREQUIREMENTS" \
-        DESTDIR=%{buildroot}%{_bindir} \
-        THE_RPM_BUILD_ROOT=%{buildroot}
-    lrelease-qt5 MEGASync/MEGASync.pro
-
-    %make_build
-popd
+%cmake_build
 
 %if %{with dolphin}
 pushd src/MEGAShellExtDolphin
@@ -175,33 +160,32 @@ popd
 %endif
 
 %if %{with nautilus}
-mkdir src/MEGAShellExtNautilus/build
-pushd src/MEGAShellExtNautilus/build
-    %qmake_qt5 ..
-    %make_build
+pushd src/MEGAShellExtNautilus
+    %cmake
+    %cmake_build
 popd
 %endif
 
 %if %{with nemo}
-mkdir src/MEGAShellExtNemo/build
-pushd src/MEGAShellExtNemo/build
-    %qmake_qt5 ..
-    %make_build
+pushd src/MEGAShellExtNemo
+    %cmake
+    %cmake_build
 popd
 %endif
 
 %install
-pushd src
-    %make_install DESTDIR=%{buildroot}%{_bindir}
+%cmake_install
 
-    desktop-file-install \
-        --add-category="Network" \
-        --dir %{buildroot}%{_datadir}/applications \
-    %{buildroot}%{_datadir}/applications/%{name}.desktop
+desktop-file-install \
+ --add-category="Network" \
+ --dir %{buildroot}%{_datadir}/applications \
+%{buildroot}%{_datadir}/applications/%{name}.desktop
 
-    #Remove ubuntu specific themes
-    rm -rf %{buildroot}%{_datadir}/icons/ubuntu*
-popd
+#Remove ubuntu specific themes
+rm -rf %{buildroot}%{_datadir}/icons/ubuntu*
+
+#Remove /opt directory
+rm -r %{buildroot}/opt
 
 %if %{with dolphin}
 pushd src/MEGAShellExtDolphin
@@ -210,24 +194,14 @@ popd
 %endif
 
 %if %{with nautilus}
-sed -i 's|$(INSTALL_ROOT)/builddir|/builddir|' src/MEGAShellExtNautilus/build/Makefile
-pushd src/MEGAShellExtNautilus/build
-    %make_install INSTALL_ROOT=%{buildroot} DESKTOP_DESTDIR=%{_prefix}
-    mkdir -p %{buildroot}%{_libdir}/nautilus/extensions-3.0
-    install -pm 755 libMEGAShellExtNautilus.so \
-        %{buildroot}%{_libdir}/nautilus/extensions-3.0/libMEGAShellExtNautilus.so
-    rm %{buildroot}%{_datadir}/icons/hicolor/icon-theme.cache
+pushd src/MEGAShellExtNautilus
+    %cmake_install
 popd
 %endif
 
 %if %{with nemo}
-sed -i 's|$(INSTALL_ROOT)/builddir|/builddir|' src/MEGAShellExtNemo/build/Makefile
-pushd src/MEGAShellExtNemo/build
-    %make_install INSTALL_ROOT=%{buildroot} DESKTOP_DESTDIR=%{_prefix}
-    mkdir -p %{buildroot}%{_libdir}/nemo/extensions-3.0
-    install -pm 755 libMEGAShellExtNemo.so \
-        %{buildroot}%{_libdir}/nemo/extensions-3.0/libMEGAShellExtNemo.so
-    rm %{buildroot}%{_datadir}/icons/hicolor/icon-theme.cache
+pushd src/MEGAShellExtNemo
+    %cmake_install
 popd
 %endif
 
@@ -237,19 +211,18 @@ popd
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/mega.png
 %{_datadir}/icons/hicolor/scalable/status/*.svg
-%{_datadir}/doc/%{name}
+%{_datadir}/%{name}/
 
 %if %{with dolphin}
 %files -n dolphin-%{name}
-%{_kf5_plugindir}/overlayicon
-%{_qt5_plugindir}/megasyncplugin.so
+%{_kf5_plugindir}/overlayicon/
+%{_kf5_plugindir}/kfileitemaction/
 %{_datadir}/icons/hicolor/*/emblems/mega-dolphin-*.png
-%{_datadir}/kservices5/%{name}-plugin.desktop
 %endif
 
 %if %{with nautilus}
 %files -n nautilus-%{name}
-%{_libdir}/nautilus/extensions-3.0/libMEGAShellExtNautilus.so*
+%{_libdir}/nautilus/extensions-4/libMEGAShellExtNautilus.so*
 %exclude %{_datadir}/icons/hicolor/*/emblems/mega-dolphin-*.png
 %exclude %{_datadir}/icons/hicolor/*/emblems/mega-nemo*.png
 %{_datadir}/icons/hicolor/*/*/mega-*.icon
@@ -264,6 +237,9 @@ popd
 %endif
 
 %changelog
+* Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-1
+- Update to 6.2.2.0
+
 * Mon Feb 02 2026 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 5.2.1.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_44_Mass_Rebuild
 

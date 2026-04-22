@@ -1,0 +1,28 @@
+diff -uNrp a/src/MEGASync/control/control.cmake b/src/MEGASync/control/control.cmake
+--- a/src/MEGASync/control/control.cmake	2026-04-08 10:52:29.000000000 +0100
++++ b/src/MEGASync/control/control.cmake	2026-04-22 14:25:52.830448056 +0100
+@@ -108,6 +108,9 @@ set(DESKTOP_APP_CONTROL_SOURCES
+     ${CMAKE_CURRENT_LIST_DIR}/state_machines/DiscountStateMachine.cpp
+ )
+ 
++find_package(ZLIB REQUIRED)
++target_link_libraries(${ExecutableTarget} PRIVATE ZLIB::ZLIB)
++
+ target_sources(${ExecutableTarget}
+     PRIVATE
+     ${DESKTOP_APP_CONTROL_HEADERS}
+diff -uNrp a/src/MEGASync/mega/tools/gfxworker/CMakeLists.txt b/src/MEGASync/mega/tools/gfxworker/CMakeLists.txt
+--- a/src/MEGASync/mega/tools/gfxworker/CMakeLists.txt	2026-04-06 17:56:25.000000000 +0100
++++ b/src/MEGASync/mega/tools/gfxworker/CMakeLists.txt	2026-04-22 14:25:52.830651904 +0100
+@@ -67,9 +67,11 @@ add_executable(gfxworker
+     src/main.cpp
+ )
+ 
++find_package(ZLIB REQUIRED)
+ target_link_libraries(gfxworker
+     PRIVATE
+     libgfxworker
++    ZLIB::ZLIB
+ )
+ 
+ # Adjust compilation flags for warnings and errors for gfxworker
