@@ -12,7 +12,7 @@
 
 Name:       megasync
 Version:    6.2.2.0
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -59,9 +59,7 @@ BuildRequires:  fuse-devel
 Requires:       hicolor-icon-theme
 
 # Fedora now has a stripped ffmpeg. Make sure we're using the full version.
-%if 0%{?fedora} && 0%{?fedora} >= 36
 Requires: ffmpeg-libs%{?_isa}
-%endif
 
 %description
 Secure:
@@ -79,10 +77,10 @@ transfers.
 %if %{with dolphin}
 %package -n dolphin-%{name}
 Summary:        Extension for Dolphin to interact with Megasync
-BuildRequires:  cmake(KF5CoreAddons)
-BuildRequires:  cmake(KF5KIO)
-BuildRequires:  kf5-rpm-macros
+BuildRequires:  cmake(KF6KIO)
+BuildRequires:  kf6-rpm-macros
 BuildRequires:  extra-cmake-modules
+Requires:       dolphin%{?_isa}
 Requires:       %{name}%{?_isa}
 
 %description -n dolphin-%{name}
@@ -165,7 +163,9 @@ sed -i 's/FreeImage::FreeImage/${FreeImage_LIBRARY}/g' src/MEGASync/mega/cmake/m
 
 %if %{with dolphin}
 pushd src/MEGAShellExtDolphin
-    %cmake_kf5
+    %cmake_kf6 \
+     -DKF_VER=6 \
+     -DQt_VER=6
     %cmake_build
 popd
 %endif
@@ -240,8 +240,8 @@ popd
 
 %if %{with dolphin}
 %files -n dolphin-%{name}
-%{_kf5_plugindir}/overlayicon/
-%{_kf5_plugindir}/kfileitemaction/
+%{_kf6_plugindir}/overlayicon/
+%{_kf6_plugindir}/kfileitemaction/
 %{_datadir}/icons/hicolor/*/emblems/mega-dolphin-*.png
 %endif
 
@@ -267,6 +267,9 @@ popd
 %endif
 
 %changelog
+* Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-5
+- Use qt6 and kf5 for dolphin support
+
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-4
 - Add Thunar support
 
