@@ -3,6 +3,7 @@
 
 %bcond_without dolphin
 %bcond_without nautilus
+%bcond_without thunar
 %if 0%{?rhel} == 8
 %bcond_with nemo
 %else
@@ -11,7 +12,7 @@
 
 Name:       megasync
 Version:    6.2.2.0
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -110,6 +111,16 @@ Requires:       %{name}%{?_isa}
 %{summary}.
 %endif
 
+%if %{with thunar}
+%package -n thunar-%{name}
+Summary:        Extension for Thunar to interact with Megasync
+BuildRequires:  pkgconfig(thunarx-3)
+Requires:       Thunar%{?_isa}
+Requires:       %{name}%{?_isa}
+
+%description -n thunar-%{name}
+%{summary}.
+%endif
 
 %prep
 %setup -q -n MEGAsync-%{version}_%{source_suffix}
@@ -173,6 +184,13 @@ pushd src/MEGAShellExtNemo
 popd
 %endif
 
+%if %{with thunar}
+pushd src/MEGAShellExtThunar
+    %cmake
+    %cmake_build
+popd
+%endif
+
 %install
 %cmake_install
 
@@ -201,6 +219,12 @@ popd
 
 %if %{with nemo}
 pushd src/MEGAShellExtNemo
+    %cmake_install
+popd
+%endif
+
+%if %{with thunar}
+pushd src/MEGAShellExtThunar
     %cmake_install
 popd
 %endif
@@ -237,7 +261,15 @@ popd
 %{_datadir}/icons/hicolor/*/*/mega-nemo*.png
 %endif
 
+%if %{with thunar}
+%files -n thunar-%{name}
+%{_libdir}/thunarx-3/libMEGAShellExtThunar.so*
+%endif
+
 %changelog
+* Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-4
+- Add Thunar support
+
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-3
 - Use cmake static libs option
 
