@@ -52,7 +52,6 @@ BuildRequires:  readline-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  vcpkg
 BuildRequires:  systemd-devel
-#Too old, has no cmake support
 BuildRequires:  freeimage-devel
 BuildRequires:  fuse-devel
 
@@ -208,6 +207,7 @@ popd
 %files
 %license LICENCE.md LICENSE-SDK
 %{_bindir}/%{name}
+%{_bindir}/mega-desktop-app-gfxworker
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/mega.png
 %{_datadir}/icons/hicolor/scalable/status/*.svg
