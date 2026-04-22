@@ -11,7 +11,7 @@
 
 Name:       megasync
 Version:    6.2.2.0
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -29,7 +29,6 @@ BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  zlib-devel
 BuildRequires:  libtool
-BuildRequires:  chrpath
 BuildRequires:  gcc-c++
 BuildRequires:  wget
 BuildRequires:  ffmpeg-devel
@@ -148,6 +147,7 @@ sed -i 's/FreeImage::FreeImage/${FreeImage_LIBRARY}/g' src/MEGASync/mega/cmake/m
  -DCMAKE_INSTALL_PREFIX=/ \
  -DCMAKE_SHARED_LINKER_FLAGS="-lfreeimage" \
  -DCMAKE_EXE_LINKER_FLAGS="-Wl,--no-as-needed -lz -lfreeimage" \
+ -DBUILD_SHARED_LIBS:BOOL=OFF \
  -Wno-dev
 
 %cmake_build
@@ -175,13 +175,6 @@ popd
 
 %install
 %cmake_install
-
-mkdir -p %{buildroot}%{_libdir}
-cp -a redhat-linux-build/src/MEGASync/mega/libSDKlib.so* %{buildroot}%{_libdir}/
-cp -a redhat-linux-build/src/MEGASync/mega/bindings/qt/libSDKQtBindings.so* %{buildroot}%{_libdir}/
-
-chrpath --delete %{buildroot}%{_libdir}/libSDKlib.so*
-chrpath --delete %{buildroot}%{_libdir}/libSDKQtBindings.so*
 
 desktop-file-install \
  --add-category="Network" \
@@ -216,8 +209,6 @@ popd
 %license LICENCE.md LICENSE-SDK
 %{_bindir}/%{name}
 %{_bindir}/mega-desktop-app-gfxworker
-%{_libdir}/libSDKlib.so*
-%{_libdir}/libSDKQtBindings.so*
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/icons/hicolor/*/apps/mega.png
 %{_datadir}/icons/hicolor/scalable/status/*.svg
@@ -247,6 +238,9 @@ popd
 %endif
 
 %changelog
+* Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-3
+- Use cmake static libs option
+
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-2
 - Add missing libs
 
