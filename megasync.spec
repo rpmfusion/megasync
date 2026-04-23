@@ -268,7 +268,7 @@ popd
 
 %changelog
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-5
-- Use qt6 and kf5 for dolphin support
+- Use qt6 and kf6 for dolphin support
 
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-4
 - Add Thunar support
