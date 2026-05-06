@@ -1,4 +1,4 @@
-%global sdk_version 10.8.2
+%global sdk_version 10.11.0
 %global source_suffix Linux
 
 %bcond_without dolphin
@@ -11,8 +11,8 @@
 %endif
 
 Name:       megasync
-Version:    6.2.2.0
-Release:    5%{?dist}
+Version:    6.3.0.1
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -267,6 +267,9 @@ popd
 %endif
 
 %changelog
+* Wed May 06 2026 Leigh Scott <leigh123linux@gmail.com> - 6.3.0.1-1
+- Update to 6.3.0.1 release
+
 * Wed Apr 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.2.2.0-5
 - Use qt6 and kf6 for dolphin support
 
