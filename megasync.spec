@@ -1,4 +1,4 @@
-%global sdk_version 10.12.1
+%global sdk_version 10.14.0
 %global source_suffix Linux
 
 %bcond_without dolphin
@@ -11,7 +11,7 @@
 %endif
 
 Name:       megasync
-Version:    6.3.1.0
+Version:    6.4.0.2
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -22,16 +22,13 @@ Source1:    https://github.com/meganz/sdk/archive/v%{sdk_version}/sdk-%{sdk_vers
 Patch0:     megasync-link-zlib.patch
 Patch1:     010-megasync-sdk-fix-cmake-dependencies-detection.patch
 Patch2:     020-megasync-app-fix-cmake-dependencies-detection.patch
-Patch3:     040-megasync-sdk-add-missing-icu-link-library.patch
 
 ExcludeArch:    %power64 %arm32 %arm64
 
 BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  zlib-devel
-BuildRequires:  libtool
 BuildRequires:  gcc-c++
-BuildRequires:  wget
 BuildRequires:  ffmpeg-devel
 BuildRequires:  bzip2-devel
 BuildRequires:  libmediainfo-devel
@@ -44,7 +41,6 @@ BuildRequires:  qt5-qttools-devel
 BuildRequires:  qt5-qtsvg-devel
 BuildRequires:  qt5-qtx11extras-devel
 BuildRequires:  qt5-qtdeclarative-devel
-BuildRequires:  terminus-fonts
 BuildRequires:  fontpackages-filesystem
 BuildRequires:  LibRaw-devel
 BuildRequires:  libsodium-devel
@@ -129,7 +125,6 @@ mv src/MEGASync/mega/sdk-%{sdk_version}/* src/MEGASync/mega/
 %patch 0 -p1
 %patch 1 -p1 -d src/MEGASync/mega
 %patch 2 -p1
-%patch 3 -p1 -d src/MEGASync/mega
 cp src/MEGASync/mega/LICENSE LICENSE-SDK
 
 #Network needed to download this pointless unused file
@@ -267,6 +262,9 @@ popd
 %endif
 
 %changelog
+* Fri Jun 05 2026 Leigh Scott <leigh123linux@gmail.com> - 6.4.0.2-1
+- Update to 6.4.0.2
+
 * Wed May 20 2026 Leigh Scott <leigh123linux@gmail.com> - 6.3.1.0-1
 - Update to 6.3.1.0
 
