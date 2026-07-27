@@ -1,5 +1,5 @@
-%global sdk_version 10.14.0
-%global source_suffix Linux
+%global sdk_version 10.16.0
+%global source_suffix OSX
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -11,7 +11,7 @@
 %endif
 
 Name:       megasync
-Version:    6.4.0.2
+Version:    6.5.0.2
 Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
@@ -86,7 +86,7 @@ Requires:       %{name}%{?_isa}
 %if %{with nautilus}
 %package -n nautilus-%{name}
 Summary:        Extension for Nautilus to interact with Megasync
-BuildRequires:  pkgconfig(libnautilus-extension-4) 
+BuildRequires:  pkgconfig(libnautilus-extension-4)
 Requires:       nautilus%{?_isa}
 Requires:       %{name}%{?_isa}
 
@@ -262,6 +262,9 @@ popd
 %endif
 
 %changelog
+* Mon Jul 27 2026 Leigh Scott <leigh123linux@gmail.com> - 6.5.0.2-1
+- Update to 6.5.0.2
+
 * Fri Jun 05 2026 Leigh Scott <leigh123linux@gmail.com> - 6.4.0.2-1
 - Update to 6.4.0.2
 
