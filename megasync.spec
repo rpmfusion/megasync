@@ -1,5 +1,5 @@
-%global sdk_version 10.16.1
-%global source_suffix Linux
+%global sdk_version 10.19.0
+%global source_suffix OSX
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -11,8 +11,8 @@
 %endif
 
 Name:       megasync
-Version:    6.5.1.0
-Release:    3%{?dist}
+Version:    6.6.1.0
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -262,6 +262,9 @@ popd
 %endif
 
 %changelog
+* Sun Sep 06 2026 Leigh Scott <leigh123linux@gmail.com> - 6.6.1.0-1
+- Update to 6.6.1.0
+
 * Sat Aug 22 2026 Leigh Scott <leigh123linux@gmail.com> - 6.5.1.0-3
 - Rebuild for new ffmpeg
 
