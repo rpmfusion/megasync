@@ -12,7 +12,7 @@
 
 Name:       megasync
 Version:    6.6.1.0
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -262,6 +262,9 @@ popd
 %endif
 
 %changelog
+* Thu Sep 17 2026 Leigh Scott <leigh123linux@gmail.com> - 6.6.1.0-2
+- Rebuild for f45 ffmpeg9
+
 * Sun Sep 06 2026 Leigh Scott <leigh123linux@gmail.com> - 6.6.1.0-1
 - Update to 6.6.1.0
 
