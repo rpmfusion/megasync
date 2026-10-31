@@ -1,5 +1,5 @@
-%global sdk_version 10.19.0
-%global source_suffix OSX
+%global sdk_version 10.21.0
+%global source_suffix Linux
 
 %bcond_without dolphin
 %bcond_without nautilus
@@ -11,8 +11,8 @@
 %endif
 
 Name:       megasync
-Version:    6.6.1.0
-Release:    2%{?dist}
+Version:    6.7.0.3
+Release:    1%{?dist}
 Summary:    Easy automated syncing between your computers and your MEGA cloud drive
 # MEGAsync is under a proprietary license, except the SDK which is BSD
 License:    Proprietary and BSD
@@ -28,6 +28,7 @@ ExcludeArch:    %power64 %arm32 %arm64
 BuildRequires:  openssl-devel
 BuildRequires:  sqlite-devel
 BuildRequires:  zlib-devel
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  ffmpeg-devel
 BuildRequires:  bzip2-devel
@@ -262,6 +263,9 @@ popd
 %endif
 
 %changelog
+* Sat Oct 31 2026 Leigh Scott <leigh123linux@gmail.com> - 6.7.0.3-1
+- Update to 6.7.0.3
+
 * Thu Sep 17 2026 Leigh Scott <leigh123linux@gmail.com> - 6.6.1.0-2
 - Rebuild for f45 ffmpeg9
 
